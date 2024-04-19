@@ -1,60 +1,78 @@
-#include <iostream>
-#include <vector>
-#include <string>
 #include <algorithm>
+#include <iostream>
+#include <string>
+#include <vector>
 
-// TrashType: Enumerates the types of trash
-enum class TrashType {
-    Recyclable,
-    Compost,
-    Landfill
-};
+// Define an enum for trash types
+enum class TrashType { Recyclable, Compost, Landfill };
 
-// Trash: Represents a single trash item with a type and recyclability status
+// Trash object definition
 struct Trash {
-    std::string name;   // Name of the trash item
-    TrashType type;     // Type of trash
-    bool isRecyclable;  // Indicates if the item is recyclable
+  std::string name;
+  TrashType type;
+  bool isRecyclable;
 
-    // Constructor for Trash
-    Trash(std::string n, TrashType t, bool recyclable) : name(n), type(t), isRecyclable(recyclable) {}
+  Trash(std::string n, TrashType t, bool recyclable)
+      : name(n), type(t), isRecyclable(recyclable) {}
 };
 
-// RecyclingBin: Handles the categorization and storage of trash
+// The RecyclingBin class will handle the sorting of Trash objects
 class RecyclingBin {
 private:
-    // Containers for each type of sorted trash
-    std::vector<Trash> recyclables;
-    std::vector<Trash> compost;
-    std::vector<Trash> landfill;
+  std::vector<Trash> recyclables;
+  std::vector<Trash> compost;
+  std::vector<Trash> landfill;
 
 public:
-    // Adds a Trash item to the appropriate container based on its type
-    void addTrash(const Trash& item);
+  // Function to add trash to the appropriate container
+  void addTrash(const Trash &item) {
+    switch (item.type) {
+    case TrashType::Recyclable:
+      recyclables.push_back(item);
+      break;
+    case TrashType::Compost:
+      compost.push_back(item);
+      break;
+    case TrashType::Landfill:
+      landfill.push_back(item);
+      break;
+    }
+  }
 
-    // Simulates the sorting of trash - could be replaced with actual sorting logic
-    void sortTrash();
+  // Function to simulate the sorting of trash
+  void sortTrash() {
+    // The sorting logic would go here
+    // In a real-world scenario, this might involve sensors and actuators
+    // For this simulation, we'll assume the trash is already presorted
+  }
 
-    // Displays the items in each trash container
-    void displaySortedTrash();
+  // Function to display sorted trash
+  void displaySortedTrash() {
+    std::cout << "Recyclable Items:" << std::endl;
+    for (const auto &item : recyclables) {
+      std::cout << "- " << item.name << std::endl;
+    }
+
+    std::cout << "\nCompost Items:" << std::endl;
+    for (const auto &item : compost) {
+      std::cout << "- " << item.name << std::endl;
+    }
+
+    std::cout << "\nLandfill Items:" << std::endl;
+    for (const auto &item : landfill) {
+      std::cout << "- " << item.name << std::endl;
+    }
+  }
 };
 
-// (Implementation of RecyclingBin methods would go here)
-
 int main() {
-    // Create an instance of the recycling system
-    RecyclingBin bin;
+  RecyclingBin bin;
 
-    // Add sample trash items to the bin
-    bin.addTrash(Trash("Plastic Bottle", TrashType::Recyclable, true));
-    bin.addTrash(Trash("Banana Peel", TrashType::Compost, false));
-    bin.addTrash(Trash("Chip Bag", TrashType::Landfill, false));
+  // Sort the trash - for our simulation, this doesn't change the order
+  bin.sortTrash();
 
-    // Sort the trash (placeholder for actual sorting logic)
-    bin.sortTrash();
+  // Display the sorted trash
+  bin.displaySortedTrash();
 
-    // Display the sorted categories of trash
-    bin.displaySortedTrash();
-
-    return 0;
+  return 0;
 }
