@@ -3,10 +3,10 @@
 #include <string>
 #include <vector>
 
-// Define an enum for trash types
+// Defining an enum for trash types
 enum class TrashType { Recyclable, Compost, Landfill };
 
-// Trash object definition
+// The struct composes and defines the object 'Trash'
 struct Trash {
   std::string name;
   TrashType type;
@@ -24,7 +24,7 @@ private:
   std::vector<Trash> landfill;
 
 public:
-  // Function to add trash to the appropriate container
+  // A function which adds trash to its appropriate container
   void addTrash(const Trash &item) {
     switch (item.type) {
     case TrashType::Recyclable:
