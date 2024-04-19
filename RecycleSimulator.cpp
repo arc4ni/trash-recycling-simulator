@@ -5,10 +5,10 @@
 // Forward declaration of the RecyclingBin class
 class RecyclingBin;
 
-// Define a type for a function pointer that adds an item to a specific container
-typedef void (RecyclingBin::*AddMethod)(const std::string&);
+// Define a type for a function pointer that adds Trash to a specific container
+typedef void (RecyclingBin::*AddTrashMethod)(const std::string&);
 
-// The RecyclingBin class will handle the sorting of items
+// The RecyclingBin class will handle the sorting of Trash objects
 class RecyclingBin {
 private:
     std::vector<std::string> recyclables;
@@ -16,57 +16,65 @@ private:
     std::vector<std::string> landfill;
 
 public:
-    // Method to add an item to the recyclable container
+    // Function to add trash to the recyclable container
     void addRecyclable(const std::string& item) {
         recyclables.push_back(item);
     }
 
-    // Method to add an item to the compost container
+    // Function to add trash to the compost container
     void addCompost(const std::string& item) {
         compost.push_back(item);
     }
 
-    // Method to add an item to the landfill container
+    // Function to add trash to the landfill container
     void addLandfill(const std::string& item) {
         landfill.push_back(item);
     }
 
-    // Method to display sorted items
-    void displaySortedItems() const {
-        std::cout << "Recyclable Items:\n";
+    // Function to display sorted trash
+    void displaySortedTrash() {
+        std::cout << "Recyclable Items:" << std::endl;
         for (const auto& item : recyclables) {
-            std::cout << "- " << item << '\n';
-        }
-        
-        std::cout << "\nCompost Items:\n";
-        for (const auto& item : compost) {
-            std::cout << "- " << item << '\n';
+            std::cout << "- " << item << std::endl;
         }
 
-        std::cout << "\nLandfill Items:\n";
+        std::cout << "\nCompost Items:" << std::endl;
+        for (const auto& item : compost) {
+            std::cout << "- " << item << std::endl;
+        }
+
+        std::cout << "\nLandfill Items:" << std::endl;
         for (const auto& item : landfill) {
-            std::cout << "- " << item << '\n';
+            std::cout << "- " << item << std::endl;
         }
     }
 };
 
-// Struct that represents an item with a name and a method to add it to a container
-struct Item {
+// Trash struct now includes a function pointer to the appropriate add method
+struct Trash {
     std::string name;
-    AddMethod addMethod;
+    AddTrashMethod addMethod;
 
-    Item(std::string n, AddMethod method) : name(n), addMethod(method) {}
+    Trash(std::string n, AddTrashMethod method) : name(n), addMethod(method) {}
 };
 
 int main() {
-    // Instantiate the RecyclingBin
     RecyclingBin bin;
 
-    // The application logic to add items would go here
-    // For example, bin.addRecyclable("Soda Can");
+    // Creating trash items with direct function pointers to the add method
+    Trash items[] = {
+        Trash("Plastic Bottle", &RecyclingBin::addRecyclable),
+        Trash("Banana Peel", &RecyclingBin::addCompost),
+        Trash("Chip Bag", &RecyclingBin::addLandfill)
+    };
 
-    // After adding items, display the sorted items
-    bin.displaySortedItems();
+    // Adding each trash item to its appropriate container
+    for (const auto& item : items) {
+        (bin.*(item.addMethod))(item.name);
+    }
+
+    // Display the sorted trash
+    bin.displaySortedTrash();
 
     return 0;
 }
