@@ -2,13 +2,13 @@
 #include <vector>
 #include <string>
 
-// Forward declaration of the RecyclingBin class
+// Declaration of the RecyclingBin class
 class RecyclingBin;
 
-// Define a type for a function pointer that adds Trash to a specific container
+// Defining a type alias for a function pointer that adds Trash to a specific container
 typedef void (RecyclingBin::*AddTrashMethod)(const std::string&);
 
-// The RecyclingBin class will handle the sorting of Trash objects
+// The RecyclingBin class handles the sorting of Trash objects
 class RecyclingBin {
 private:
     std::vector<std::string> recyclables;
