@@ -1,78 +1,72 @@
-#include <algorithm>
 #include <iostream>
-#include <string>
 #include <vector>
+#include <string>
 
-// Defining an enum for trash types
-enum class TrashType { Recyclable, Compost, Landfill };
+// Forward declaration of the RecyclingBin class
+class RecyclingBin;
 
-// The struct composes and defines the object 'Trash'
-struct Trash {
-  std::string name;
-  TrashType type;
-  bool isRecyclable;
+// Define a type for a function pointer that adds an item to a specific container
+typedef void (RecyclingBin::*AddMethod)(const std::string&);
 
-  Trash(std::string n, TrashType t, bool recyclable)
-      : name(n), type(t), isRecyclable(recyclable) {}
-};
-
-// The RecyclingBin class will handle the sorting of Trash objects
+// The RecyclingBin class will handle the sorting of items
 class RecyclingBin {
 private:
-  std::vector<Trash> recyclables;
-  std::vector<Trash> compost;
-  std::vector<Trash> landfill;
+    std::vector<std::string> recyclables;
+    std::vector<std::string> compost;
+    std::vector<std::string> landfill;
 
 public:
-  // A function which adds trash to its appropriate container
-  void addTrash(const Trash &item) {
-    switch (item.type) {
-    case TrashType::Recyclable:
-      recyclables.push_back(item);
-      break;
-    case TrashType::Compost:
-      compost.push_back(item);
-      break;
-    case TrashType::Landfill:
-      landfill.push_back(item);
-      break;
-    }
-  }
-
-  // Function to simulate the sorting of trash
-  void sortTrash() {
-    // The sorting logic would go here
-    // In a real-world scenario, this might involve sensors and actuators
-    // For this simulation, we'll assume the trash is already presorted
-  }
-
-  // Function to display sorted trash
-  void displaySortedTrash() {
-    std::cout << "Recyclable Items:" << std::endl;
-    for (const auto &item : recyclables) {
-      std::cout << "- " << item.name << std::endl;
+    // Method to add an item to the recyclable container
+    void addRecyclable(const std::string& item) {
+        recyclables.push_back(item);
     }
 
-    std::cout << "\nCompost Items:" << std::endl;
-    for (const auto &item : compost) {
-      std::cout << "- " << item.name << std::endl;
+    // Method to add an item to the compost container
+    void addCompost(const std::string& item) {
+        compost.push_back(item);
     }
 
-    std::cout << "\nLandfill Items:" << std::endl;
-    for (const auto &item : landfill) {
-      std::cout << "- " << item.name << std::endl;
+    // Method to add an item to the landfill container
+    void addLandfill(const std::string& item) {
+        landfill.push_back(item);
     }
-  }
+
+    // Method to display sorted items
+    void displaySortedItems() const {
+        std::cout << "Recyclable Items:\n";
+        for (const auto& item : recyclables) {
+            std::cout << "- " << item << '\n';
+        }
+        
+        std::cout << "\nCompost Items:\n";
+        for (const auto& item : compost) {
+            std::cout << "- " << item << '\n';
+        }
+
+        std::cout << "\nLandfill Items:\n";
+        for (const auto& item : landfill) {
+            std::cout << "- " << item << '\n';
+        }
+    }
+};
+
+// Struct that represents an item with a name and a method to add it to a container
+struct Item {
+    std::string name;
+    AddMethod addMethod;
+
+    Item(std::string n, AddMethod method) : name(n), addMethod(method) {}
 };
 
 int main() {
-  RecyclingBin bin;
+    // Instantiate the RecyclingBin
+    RecyclingBin bin;
 
-  // Sort the trash - for our simulation, this doesn't change the order
-  bin.sortTrash();
+    // The application logic to add items would go here
+    // For example, bin.addRecyclable("Soda Can");
 
-  // Display the sorted trash
-  bin.displaySortedTrash();
+    // After adding items, display the sorted items
+    bin.displaySortedItems();
 
-  return 0;
+    return 0;
 }
